@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>活动详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/Details.css">
+
+</head>
+<body>
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row" style="background: #FFFFFF">
+        <div class="zc col-xs-12">
+            <div class="jt"></div>
+            <spen>活动详情</spen>
+        </div>
+    </div>
+
+    <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+    <div class="row" style="margin-top: 34px" >
+        <div style="display:none;top: 400px;" class="cw col-xs-12">
+            <div class="cw1" style="width: 171px;">登录时间过长,请重新登录</div>
+        </div>
+        <div class="col-xs-12 hdmz">
+            <div class="col-xs-12 hdmz1">
+                <div class="bd">
+                    <div class="bd1">活动名称 : 支付宝拉新推广活动
+                    </div>
+                    <div class="bd2">
+                        <div class=" col-xs-12 qb">
+<div class="col-lg-offset-0"></div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".jt").on('click', function () {
+        window.location.href="List.html";
+    })
+    $.ajax({
+        type : "post",
+        url : 'http://47.99.106.241:3000/mock/164/mobile/staff/get_activity_detail',
+        data:{activity_id:"activity_id"},
+        dataType : "json",
+        success : function(data) {
+            if(data.error == 0) {
+
+                var a=data.data.pay_img;
+                var b=data.data.pay_img_big;
+                var c=data.data.promotion_img;
+                var d=data.data.promotion_img_big;
+                var d=data.data.promotion_img_big;
+                var text = "";
+                if (a=="undefined"){
+                    text+=`<div class="col-xs-6 qb1 col-xs-offset-3"><img src="`
+                        +a+` " class="hd" id="hd1" /><div class="hd1"><div>推广码</div></div></div>`;
+                } else {
+                    text+=`<div class="col-xs-6 qb1"><img src="`
+                        +a+` " class="hd" id="hd1"/><div class="hd1"><div>推广码</div></div></div><div class="col-xs-6 qb1"><img src="
+                    `+b+`" class="hd" id="hd2"/><div class="hd1"><div>推广码</div></div></div>`;
+                }
+                $(".qb").html(text);
+
+            }else if (data.error == 77) {
+
+                $('.cw').css("display", "block");
+                $('.cw1').html("登录时间过长,请重新登录");
+                setTimeout(function () {
+                    window.location.href = "Sign in.html";
+                }, 1000);
+            }
+        },
+        error : function(json) {
+            toastr.error('返回数值出错!');
+        }
+    });
+</script>
+<script>
+    $(function (){
+        setTimeout(function(){
+            $("#hd1").on('click', function () {
+                window.location.href="Popup.html?"+encodeURI("ddr1");
+            })
+            $("#hd2").on('click', function () {
+                window.location.href="Popup.html?"+encodeURI("ddr2");
+            })
+        }, 500);
+    })
+</script>
+</body>
+</html>

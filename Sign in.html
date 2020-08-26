@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/Sign in.css">
+</head>
+<body>
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row">
+        <div class="zc col-xs-12"> <spen>登录</spen></div>
+    </div>
+
+    <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+    <div class="row">
+        <form class="form-horizontal" id="register_form" action="" method="post">
+            <div style="display: none;" class="cw col-xs-12">
+                <div class="cw1">请输入</div>
+            </div>
+            <div class="form-group"  style="padding-top: 60px">
+                <div class="col-xs-12">
+                    <input type="text" id="staff_tel" class="form-control input_bar" name="staff_tel" placeholder="手机号">
+                    <span class="glyphicon glyphicon-sj form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group" style="padding-bottom: 11px">
+                <div class="col-xs-12">
+                    <input type="password" class="form-control input_bar" id="password" name="password" placeholder="登录密码">
+                    <span class="glyphicon glyphicon-dl form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top: 0px;padding-bottom: 0px">
+                <div class="col-xs-12">
+                    <button type="button" id="submit_btn" class="btn btn-default">登录</button>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <span class="or">or</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top: 0px;padding-bottom: 32px">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-default btn-default2">快捷登陆</button>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top: 0px;padding-bottom: 0px">
+                <div class="col-xs-12">
+                    <div class="col-xs-6" style="padding-left: 0px;">
+                        <button type="submit" class="btn btn-default btn-dl font1"  onclick="javascript:window.open('Register.html')">账号注册</button>
+                    </div>
+                    <div class="col-xs-6" style="padding-right: 0px;">
+                        <button class="btn btn-default btn-dl font2" >忘记密码</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var password = /^[a-zA-Z0-9_-]{6,16}$/; //密码
+    var tel = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|17[0,6,7,8]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+    var isPassword;
+    var isTel;
+    if ($('input', '#register_form').val() == '') {
+        isPassword = false;
+        isTel = false;
+    }
+
+    // 输入框焦点事件
+    $('#register_form').on({
+        focus: function () {
+            // 获取焦点
+
+        },
+        blur: function () {
+            // 失去焦点，通过id判断
+            switch ($(this).attr('id')) {
+                case 'staff_tel':
+                    if (!tel.test($(this).val())) {
+                        isTel = false;
+                        $('.cw').css("display", "block");
+                        $('.cw1').html("手机格式不正确");
+                    } else {
+                        isTel = true;
+                        $('.cw').css("display", "none");
+                    }
+                    break;
+                case 'password':
+                    if (!password.test($(this).val())) {
+                        isPassword = false;
+                        $('.cw').css("display", "block");
+                        $('.cw1').html("密码格式不正确");
+
+                    } else {
+                        isPassword = true;
+                        $('.cw').css("display", "none");
+                    }
+                    break;
+                default:
+                    console.log(isExist);
+                    break;
+            }
+            //
+            // // 失去焦点正确的样式
+            // if (isExist == true) {
+            //     $('.cw').css("display","none");
+            // } else if (isExist == false || $(this).val() == '' ) {
+            //     $('.cw').css("display","block");
+            //     $('.cw1').html("请正确填写");
+            // }
+        }
+    }, '.input_bar');
+
+    // 提交前判断
+    // $('#submit_btn').on('click', function () {
+    //     if (isExist == false || $(this).val() == '' ) {
+    //         $('.cw').css("display","block");
+    //         $('.cw1').html("请正确填写");
+    //         return false;
+    //     } else if (isExist == true) {
+    //         $('.cw').css("display","none");
+    //         return true;
+    //     }
+    // })
+
+
+    $('#submit_btn').on('click', function () {
+        var a=$("#staff_tel").val();
+        var b=$("#password").val();
+        if (isTel == false ||isPassword ==false) {
+            $('.cw').css("display","block");
+            $('.cw1').html("请正确填写");
+            setTimeout(function(){$('.cw').css("display","none");},1000);
+            return false;
+        }else{
+        $.ajax({
+            type : "post",
+            url : 'http://47.99.106.241:3000/mock/164/mobile/staff/login',
+            // data:{staff_tel:a,password: b},
+            data:$('#register_form').serialize(),
+            dataType : "json",
+            success : function(data) {
+               if(data.error == 0){
+                   $('.cw').css("display","block");
+                   $('.cw1').html("登录成功");
+                   setTimeout(function(){$('.cw').css("display","none");　window.location.href="Index.html";},1000);
+               }else if(data.error == 1){
+                   $('.cw').css("display","block");
+                   $('.cw1').html("密码错误");
+                   setTimeout(function(){$('.cw').css("display","none");},1000);
+               }
+            },
+            error : function(json) {
+                toastr.error('返回数值出错!');
+            }
+        });
+       }
+    })
+
+
+
+</script>
+</body>
+</html>

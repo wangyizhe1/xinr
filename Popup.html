@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>活动名称</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/Popup.css">
+
+</head>
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 78px">
+        <div style="display:none;top: 400px;" class="cw col-xs-12">
+            <div class="cw1" style="width: 171px;">登录时间过长,请重新登录</div>
+        </div>
+        <div class="col-xs-12 hdmz">
+            <div class="col-xs-12 hdmz1">
+                <div class="bd">
+                    <div class="cd">
+
+                    </div>
+                    <div class="bd1">活动名称 : 支付宝拉新推广活动
+                    </div>
+                    <div class="bd2">
+                        <div class=" col-xs-12 qb">
+                            <div class="tc">
+                                <img src="image/弹窗.png" alt="" width=100% height=100%>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".cd").on('click', function () {
+        window.location.href="Details.html";
+    })
+
+    $.ajax({
+        type : "post",
+        url : 'http://47.99.106.241:3000/mock/164/mobile/staff/get_activity_detail',
+        data:{activity_id:"activity_id"},
+        dataType : "json",
+        success : function(data) {
+            if(data.error == 0) {
+                var c=data.data.promotion_img;
+                var d=data.data.promotion_img_big;
+                var text = "";
+                var loc = location.href;
+                var n1 = loc.length;//地址的总长度
+                var n2 = loc.indexOf("?");//取得=号的位置
+                var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+                console.log(id);
+
+                var loc = location.href;
+                var n1 = loc.length;//地址的总长度
+                var n2 = loc.indexOf("?");//取得=号的位置
+                var id = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+                if(id=="ddr1"){
+                    text+=` <img src="`+c+`" alt="" width=100% height=100%>`;
+                }else if(id=="ddr2"){
+                    text+=` <img src="`+d+`" alt="" width=100% height=100%>`;
+                }
+                $(".tc").html(text);
+
+            }else if (data.error == 77) {
+
+                $('.cw').css("display", "block");
+                $('.cw1').html("登录时间过长,请重新登录");
+                setTimeout(function () {
+                    window.location.href = "Sign in.html";
+                }, 1000);
+            }
+        },
+        error : function(json) {
+            toastr.error('返回数值出错!');
+        }
+    });
+</script>
+</body>
+</html>

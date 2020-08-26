@@ -1,0 +1,157 @@
+/*苹方-简 常规体*/
+/*font-family: PingFangSC-Regular, sans-serif;*/
+/*苹方-简 极细体*/
+/*font-family: PingFangSC-Ultralight, sans-serif;*/
+/*苹方-简 细体*/
+/*font-family: PingFangSC-Light, sans-serif;*/
+/*苹方-简 纤细体*/
+/*font-family: PingFangSC-Thin, sans-serif;*/
+/*苹方-简 中黑体*/
+/*font-family: PingFangSC-Medium, sans-serif;*/
+/*苹方-简 中粗体*/
+/*font-family: PingFangSC-Semibold, sans-serif;*/
+body{
+    font-family: PingFangSC-Regular, sans-serif;
+}
+.zc{
+    height: 40px;
+    text-align:center;
+    line-height: 40px;
+    font-family: PingFangSC-Medium, sans-serif;
+    color: #333333;
+    font-size: 18px;
+    font-weight: bold;
+}
+.form-group{
+    padding:0 39px 10px 39px ;
+    margin: 0 !important;
+}
+.form-group>.col-xs-12{
+    padding: 0;
+}
+.form-control{
+    height: 47px;
+    border-radius: 50px;
+    border: 1px solid #DDDDDD !important;
+    color:#333333;
+    font-family: PingFangSC-Regular, sans-serif;
+    padding-left: 54px;
+}
+input{
+    outline: none;
+
+    -webkit-appearance: none; /*去除系统默认的样式*/
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 点击高亮的颜色*/
+    /*  text-align: right;*/
+    font-family: PingFangSC-Regular, sans-serif !important;
+}
+
+input::-webkit-input-placeholder {
+    color:#999999;
+    /* 字体大小直接写样式即可 */
+    font-size: 17px;
+}
+.form-control-feedback {
+    position: absolute;
+    top: 15px;
+    right: 87%;
+    z-index: 2;
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+.glyphicon-sj{
+    background: url("../image/2.png") 100% 100% no-repeat;
+}
+.glyphicon-dl{
+    background: url("../image/4.png") 100% 100% no-repeat;
+}
+.btn-default{
+    border-radius: 50px;
+    height: 47px;
+    width: 100%;
+    background-color: #343434;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-family: PingFangSC-Medium, sans-serif;
+}
+.btn-dl{
+    background-color:#fff;
+    border: none;
+    font-size: 14px;
+    color: #999999;
+    height: 20px;
+    margin: 0 0;
+    padding: 0 0;
+}
+.form-control {
+    font-size: 17px;
+}
+.or{
+    text-align: center;
+    line-height: 32px;
+    width: 100%;
+    color: #999999;
+    font-size: 17px;
+}
+.font1{
+    font-size: 17px;
+    text-align: left;
+}
+.font2{
+    font-size: 17px;
+    text-align: right;
+}
+.btn-default2{
+    background-color: #FFFFFF;
+    color: #FF9446;
+    border: 1px #FF9446 solid;
+}
+button, input {
+    outline: none;
+}
+
+#submit_btn:hover {
+    border-radius: 50px;
+    height: 47px;
+    width: 100%;
+    background-color: #343434;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-family: PingFangSC-Medium, sans-serif;
+}
+
+
+#submit_btn:hover, #submit_btn:focus {
+    border-radius: 50px;
+    height: 47px;
+    width: 100%;
+    background-color: #343434;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-family: PingFangSC-Medium, sans-serif;
+}
+.cw {
+    width: 100%;
+    float: left;
+    height: 36px;
+    text-align: center;
+    position: relative;
+    top: 265px;
+    z-index: 10;
+
+}
+
+.cw1 {
+    width: 123px;
+    text-align: center;
+    height: 100%;
+    display: inline-block;
+    background: #4C4C4C;
+    line-height: 36px;
+    font-size: 14px;
+    color: #FFFFFF;
+
+    border-radius: 6px;
+}

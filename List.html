@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>活动列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/List.css">
+
+
+</head>
+<body>
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row">
+        <div style="display:none;top: 400px;" class="cw col-xs-12">
+            <div class="cw1" style="width: 171px;">登录时间过长,请重新登录</div>
+        </div>
+        <div class="zc col-xs-12">
+            <div class="jt"></div>
+            <spen>活动列表</spen>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 28px">
+        <div id="list"></div>
+    </div>
+</div>
+<script  defer>
+    $.ajax({
+        type : "get",
+        url : 'http://47.99.106.241:3000/mock/164/mobile/staff/get_activity_list',
+        data:[],
+        dataType : "json",
+        success : function(data) {
+            if(data.error == 0){
+                var a=data.data.list;
+                var text = "";
+                var i;
+                for (i = 0; i < a.length; i++) {
+                    text+=`<div class="col-xs-12 hdmz"><div class="col-xs-12 hdmz1"> <div class="bd"> <div class="bd1">`
+                        +data.data.list[i].activity_name+` </div> <div class="col-xs-12 lz"><button class="btn hd" name="`+data.data.list[i].status+`">立即领取
+                </button></div></div></div> </div>`;
+                }
+                $("#list").html(text);
+            }else if (data.error == 77) {
+
+                $('.cw').css("display", "block");
+                $('.cw1').html("登录时间过长,请重新登录");
+                setTimeout(function () {
+                    window.location.href = "Sign in.html";
+                }, 1000);
+            }
+        },
+        error : function(json) {
+            toastr.error('返回数值出错!');
+        }
+    });
+</script>
+<script>
+    $(function (){
+        setTimeout(function(){
+
+            $(".lz>button").on('click', function () {
+                $.ajax({
+                    type : "post",
+                    url : 'http://47.99.106.241:3000/mock/164/mobile/staff/do_receive_activity',
+                    data:{activity_id:"activity_id"},
+                    dataType : "json",
+                    success : function(data) {
+                        if(data.error == 0){
+                            window.location.href = "Details.html";
+                        }else if (data.error == 77) {
+
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("登录时间过长,请重新登录");
+                            setTimeout(function () {
+                                window.location.href = "Sign in.html";
+                            }, 1000);
+                        }
+                    },
+                    error : function(json) {
+                        toastr.error('返回数值出错!');
+                    }
+                });
+            })
+            }, 100);
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>客户信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/Customer.css">
+
+    <script src="laydate/laydate.js"></script>
+</head>
+<style>
+    button, input {
+        outline: none;
+    }
+    .sz {
+        margin: 0;
+        padding: 0;
+        border: none;
+    /*/ / 自定义边框 outline: none;*/
+    /*/ / 消除默认点击蓝色边框效果 background: #000;*/
+        background: #ffffff;
+        top: 10px;
+    }
+</style>
+<body>
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row" style="background: #FFFFFF">
+        <div style="display:none;top: 400px;" class="cw col-xs-12">
+            <div class="cw1" style="width: 171px;">登录时间过长,请重新登录</div>
+        </div>
+        <div class="zc col-xs-12">
+            <div class="jt"></div>
+            <spen>客户信息</spen>
+        </div>
+        <div class="col-xs-12 jg"></div>
+        <div class="col-xs-12 jg1">
+            <div class="col-xs-6 col-xs-offset-6" style="    padding-left: 34px;    padding-right: 0px;">
+                <span class="tg">支付宝推广活动</span>
+                <span class="glyphicon glyphicon-chevron-right"></span></div>
+        </div>
+        <div class="col-xs-12 jg"></div>
+        <div class="col-xs-12 jg1">
+            <div class="col-xs-6">
+                <img src="image/形状.png" height="16" width="16" style="position: relative;top: -2px;left: -12px;"/>
+               <span class="tg">开始时间</span>
+            </div>
+            <div class="col-xs-6 " style="     padding-right: 0px;">
+
+                <button  class="glyphicon glyphicon-chevron-right glyphicon1 sz" id="text1">2019-07-03</button>
+            </div>
+        </div>
+        <div class="col-xs-12" style="border-top:solid 1px #eceeee "></div>
+        <div class="col-xs-12 jg1">
+            <div class="col-xs-6">
+                <img src="image/形状.png" height="16" width="16" style="position: relative;top: -2px;left: -12px;"/>
+                <span class="tg">结束时间</span>
+            </div>
+            <div class="col-xs-6 " style="     padding-right: 0px;">
+
+                <button class="glyphicon glyphicon-chevron-right glyphicon1 sz" id="text2">2019-07-03</button>
+            </div>
+        </div>
+        <div class="col-xs-12 jg"></div>
+        <div class="col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+            <table id="list" class="table table-bordered">
+
+
+            </table>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 34px">
+    </div>
+</div>
+<script>
+    var begin_date;
+    var end_date;
+    laydate.render({
+        elem: '#text1' //指定元素
+        // ,range: ' ' //或 range: '~' 来自定义分割字符
+        ,format: 'yyyy-MM-dd' //可任意组合
+        ,isInitValue: false //是否允许填充初始值，默认为 true
+        ,min: '2017-8-11'
+        ,value: '2018-08-18'
+        ,max: '2050-8-18'
+        ,trigger: 'click' //采用click弹出
+        ,done: function(value){
+            console.log(value); //得到日期生成的值，如：2017-08-18
+            // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            begin_date=value;
+            console.log(begin_date);
+            return begin_date;
+        }
+    });
+    laydate.render({
+        elem: '#text2' //指定元素
+        // ,range: ' ' //或 range: '~' 来自定义分割字符
+        ,format: 'yyyy-MM-dd' //可任意组合
+        ,isInitValue: false //是否允许填充初始值，默认为 true
+        ,min: '2017-8-11'
+        ,value: '2019-01-01'
+        ,max: '2050-8-18'
+        ,trigger: 'click' //采用click弹出
+        ,done: function(value, date, endDate){
+            end_date=value;
+                $.ajax({
+                    type : "post",
+                    url : 'http://47.99.106.241:3000/mock/164/mobile/staff/get_member_list',
+                    data:"page=" + 1+ "&page_size=" + 2+"&begin_date=" + begin_date + "&end_date=" + end_date ,
+                    dataType : "json",
+
+                    success : function(data) {
+                        if(data.error == 0){
+                            var a=data.data.list;
+                            var text = "";
+                            var i;
+                            for (i = 0; i < a.length; i++) {
+                                text+=`<tr><td>`+data.data.list[i].date+`</td>`;
+                                text+=`<td>`+data.data.list[i].invalid_num+`</td>`;
+                                text+=`<td>`+data.data.list[i].valid_num+`</td><tr>/`;
+                            }
+                            $("#list").html(
+                                `<tr class="bg1"><td>日期</td><td>有效户</td><td>非有效户</td>`+text+`</tr>`
+                            );
+                        }
+
+
+                    },
+                    error : function(json) {
+                        toastr.error('返回数值出错!');
+                    }
+                });
+
+
+        }
+    });
+    $(".jt").on('click', function () {
+        window.location.href="Index.html";
+    })
+    $.ajax({
+        type : "post",
+        url : 'http://47.99.106.241:3000/mock/164/mobile/staff/get_member_list',
+        data:"page=" + 1+ "&page_size=" + 2+"&begin_date=" + begin_date + "&end_date=" + end_date ,
+        dataType : "json",
+
+        success : function(data) {
+            if(data.error == 0){
+                var a=data.data.list;
+                var text = "";
+                var i;
+                for (i = 0; i < a.length; i++) {
+                    text+=`<tr><td>`+data.data.list[i].date+`</td>`;
+                    text+=`<td>`+data.data.list[i].invalid_num+`</td>`;
+                    text+=`<td>`+data.data.list[i].valid_num+`</td><tr>/`;
+                }
+                $("#list").html(
+                    `<tr class="bg1"><td>日期</td><td>有效户</td><td>非有效户</td>`+text+`</tr>`
+                );
+            }else if (data.error == 77) {
+
+                $('.cw').css("display", "block");
+                $('.cw1').html("登录时间过长,请重新登录");
+                setTimeout(function () {
+                    window.location.href = "Sign in.html";
+                }, 1000);
+            }
+
+
+        },
+        error : function(json) {
+            toastr.error('返回数值出错!');
+        }
+    });
+</script>
+</body>
+</html>

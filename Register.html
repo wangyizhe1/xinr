@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/Register.css">
+</head>
+<body>
+
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row">
+        <div class="zc col-xs-12">
+            <spen>注册</spen>
+        </div>
+    </div>
+
+    <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+    <div class="row">
+        <div class="form-horizontal" id="register_form" method="post">
+            <div style="display: none;" class="cw col-xs-12">
+                <div class="cw1">请输入</div>
+            </div>
+            <div class="form-group" style="padding-top: 50px">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control input_bar" id="nickname" name="nickname" placeholder="昵称">
+                    <span class="glyphicon glyphicon-nc form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input type="text" id="staff_tel" class="form-control input_bar" name="staff_tel" placeholder="手机号">
+                    <span class="glyphicon glyphicon-sj form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control input_bar" id="sms_code" name="sms_code" placeholder="验证码">
+                    <span class="glyphicon glyphicon-yz form-control-feedback" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-hq form-control-feedback" aria-hidden="true" onclick="sendemail()" id="verifyCodeBtn">
+                        获取验证码</span>
+                </div>
+            </div>
+            <div class="form-group" style="padding-bottom: 11px">
+                <div class="col-xs-12">
+                    <input type="password" class="form-control input_bar" id="password" name="password" placeholder="登录密码">
+                    <span class="glyphicon glyphicon-dl form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group" style="padding-bottom: 0px">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control input_bar" id="invite_code" name="invite_code" placeholder="邀请码">
+                    <span class="glyphicon glyphicon-yq form-control-feedback" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top: 50px;padding-bottom: 0px">
+                <div class="col-xs-12">
+                    <button type="submit" id="submit_btn" class="btn btn-default">完成</button>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top: 20px;padding-bottom: 0px">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-default btn-dl" onclick="javascript:window.open('Sign in.html')">已有账号，进行登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        var phone=false; //判定手机符合格式
+        var sms_code = ""; //接收验证码
+        console.log(phone);
+        var nickname = /^[a-zA-Z0-9_-]{4,16}$/;
+        var password = /^[a-zA-Z0-9_-]{6,16}$/; //密码
+        var sms_code = /^[a-zA-Z0-9_-]{6,16}$/;
+        var tel = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|17[0,6,7,8]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+        var invite_code = /^[a-zA-Z0-9_-]{6,16}$/;
+        var isNickname;
+        var isStaff_tel;
+        var isSms_code;
+        var isPassword;
+        var isInvite_code;
+        var phone=false;
+        // 如果输入框为空阻止提交
+        if ($('input', '#register_form').val() == '') {
+            isNickname = false;
+           isStaff_tel= false;
+             isSms_code= false;
+             isPassword= false;
+             isInvite_code= false;
+        }
+
+        // 输入框焦点事件
+        $('#register_form').on({
+            focus: function () {
+                // 获取焦点
+
+            },
+            blur: function () {
+                // 失去焦点，通过id判断
+                switch ($(this).attr('id')) {
+                    case 'nickname':
+                        if (!nickname.test($(this).val())) {
+                            isNickname = false;
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("昵称格式不正确");
+                        } else {
+                            isNickname  = true;
+                            $('.cw').css("display", "none");
+                        }
+                        break;
+                    case 'staff_tel':
+                        if (!tel.test($(this).val())) {
+                            isStaff_tel = false;
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("手机格式不正确");
+                        } else {
+                            isStaff_tel = true;
+                            $('.cw').css("display", "none");
+                             phone=true;
+                            console.log(phone);
+                        }
+                        break;
+                    case 'sms_code':
+                        if (!sms_code.test($(this).val())) {
+                            isSms_code = false;
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("验证码格式不正确");
+                        } else {
+                            isSms_code = true;
+                            $('.cw').css("display", "none");
+                        }
+                        break;
+                    case 'password':
+                        if (!password.test($(this).val())) {
+                            isPassword = false;
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("密码格式不正确");
+
+                        } else {
+                            isPassword = true;
+                            $('.cw').css("display", "none");
+                        }
+                        break;
+                    case 'invite_code':
+                        if (!invite_code.test($(this).val())) {
+                            isInvite_code = false;
+                            $('.cw').css("display", "block");
+                            $('.cw1').html("邀请码格式不正确");
+                        } else {
+                            isInvite_code = true;
+                            $('.cw').css("display", "none");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, '.input_bar');
+
+        var countdown=60;
+        function sendemail(){
+
+            if(phone==true){
+                $("#verifyCodeBtn").css("pointer-events", "none");
+                var obj = $("#verifyCodeBtn");
+                var tel=$("#staff_tel").val();
+                console.log(tel)
+                settime(obj);
+                $.ajax({
+                    url: "http://47.99.106.241:3000/mock/164/common/api/send_sms_code",
+                    type: "post",
+                    data: {tel: tel},
+                    success: function (data) {
+                        console.log(data)
+
+                    }, error: function () {
+                        alert("发送未知错误！ 无法发送验证码！")
+                    }
+                });
+                function settime(obj) { //发送验证码倒计时
+                    if (countdown == 0) {
+                        obj.attr('disabled',false);
+                        //obj.removeattr("disabled");
+                        obj.html("获取验证码");
+                        countdown = 60;
+                        $("#verifyCodeBtn").css("pointer-events", "inherit");
+                        return;
+                    } else {
+                        obj.attr('disabled',true);
+                        obj.html("重新发送(" + countdown + ")");
+                        countdown--;
+                    }
+                    setTimeout(function() {
+                            settime(obj) }
+                        ,1000)
+                }
+            }else {
+                $('.cw').css("display", "block");
+                $('.cw1').html("请填写正确手机号");
+                setTimeout(function(){$('.cw').css("display","none");},1000);
+            }
+        }
+        $('#submit_btn').on('click', function () {
+            if (isNickname = false ||isStaff_tel ==false ||isSms_code ==false ||isPassword ==false ||isInvite_code ==false) {
+                $('.cw').css("display","block");
+                $('.cw1').html("请正确填写");
+                setTimeout(function(){$('.cw').css("display","none");},1000);
+                return false;
+            }
+
+        $.ajax({
+            type : "post",
+            url : 'http://47.99.106.241:3000/mock/164/mobile/staff/register',
+            data:"nickname=" + nickname + "&staff_tel=" + staff_tel + "&sms_code=" + sms_code + "&password=" + password + "&invite_code=" + invite_code,
+            dataType : "json",
+            success : function(data) {
+                if(data.error == 0){
+                    $('.cw').css("display","block");
+                    $('.cw1').html("注册成功");
+                    setTimeout(function(){$('.cw').css("display","none");　window.location.href="Index.html";},1000);
+                }else if(data.error == 1){
+                    $('.cw').css("display","block");
+                    $('.cw1').html("注册错误");
+                    setTimeout(function(){$('.cw').css("display","none");},1000);
+                }
+            },
+            error : function(json) {
+                toastr.error('返回数值出错!');
+            }
+        });
+        })
+
+</script>
+</body>
+</html>
